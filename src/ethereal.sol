@@ -75,7 +75,7 @@ contract Ethereal is Ownable, Pausable, ERC721URIStorage, ERC721Holder, Reentran
         bool _ethereum,
         string memory _baseURI
     ) external onlyOwner returns (uint256 id_) {
-        id_ = collections.length;
+        id_ = collections.length; // @q what happens when a collections item is removed?
 
         collections.push(
             Collection({
@@ -257,7 +257,7 @@ contract Ethereal is Ownable, Pausable, ERC721URIStorage, ERC721Holder, Reentran
     }
 
     function withdrawFees() external onlyOwner {
-        (bool success,) = payout.call{value: fees}("");
+        (bool success,) = payout.call{value: fees}(""); // @audit only ETH fees are withdrawn
         require(success, "Transfer failed");
         fees = 0;
     }
